@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import Colors from '@/constants/Colors';
 import { TaskCard } from '@/components/TaskCard';
 import { Button } from '@/components/Button';
+import Animated, { FadeInDown, Layout } from 'react-native-reanimated';
 
 // Mock Data
 const INITIAL_TASKS = [
@@ -37,15 +38,23 @@ export default function HomeScreen() {
             <SafeAreaView style={styles.safeArea}>
                 <StatusBar style="light" />
                 <View style={styles.header}>
-                    <Text style={styles.greeting}>Good Evening,</Text>
-                    <Text style={styles.title}>My Tasks</Text>
+                    <View>
+                        <Text style={styles.greeting}>Good Evening,</Text>
+                        <Text style={styles.title}>My Tasks</Text>
+                    </View>
+                    <View style={styles.avatarPlaceholder} />
                 </View>
 
                 <FlatList
                     data={tasks}
                     keyExtractor={(item) => item.id}
-                    renderItem={({ item }) => (
-                        <TaskCard task={item} onPress={() => console.log('Task pressed:', item.title)} />
+                    renderItem={({ item, index }) => (
+                        <Animated.View
+                            entering={FadeInDown.delay(index * 100).springify()}
+                            layout={Layout.springify()}
+                        >
+                            <TaskCard task={item} onPress={() => console.log('Task pressed:', item.title)} />
+                        </Animated.View>
                     )}
                     contentContainerStyle={styles.listContent}
                     showsVerticalScrollIndicator={false}
@@ -67,9 +76,20 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     header: {
-        paddingHorizontal: 20,
-        paddingTop: 20,
-        paddingBottom: 10,
+        paddingHorizontal: 24,
+        paddingTop: 60,
+        paddingBottom: 24,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    avatarPlaceholder: {
+        width: 48,
+        height: 48,
+        borderRadius: 24,
+        backgroundColor: Colors.dark.cardBackground,
+        borderWidth: 1,
+        borderColor: Colors.dark.border,
     },
     greeting: {
         color: '#8E8E93',

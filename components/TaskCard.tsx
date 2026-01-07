@@ -28,18 +28,22 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onPress }) => {
     };
 
     return (
-        <Pressable onPress={onPress} style={({ pressed }) => [
-            styles.container,
-            pressed && styles.pressed
-        ]}>
+        <Pressable
+            onPress={onPress}
+            style={({ pressed }) => [
+                styles.container,
+                pressed && styles.pressed
+            ]}
+        >
             <View style={styles.cardContent}>
                 <View style={[styles.categoryIndicator, { backgroundColor: getCategoryColor(task.category) }]} />
                 <View style={styles.textContainer}>
                     <Text style={styles.title}>{task.title}</Text>
                     <Text style={styles.description} numberOfLines={2}>{task.description}</Text>
                 </View>
+                {/* Subtle gradient overlay for depth */}
                 <LinearGradient
-                    colors={[getCategoryColor(task.category) + '20', 'transparent']}
+                    colors={[getCategoryColor(task.category) + '15', 'transparent']}
                     style={StyleSheet.absoluteFillObject}
                     start={{ x: 0, y: 0 }}
                     end={{ x: 1, y: 1 }}
